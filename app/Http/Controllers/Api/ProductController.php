@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
 
 public function index()
 {
-    $products = Product::with('images')
+    $products = Product::with('category','unit','images')
     ->where('business_id', auth()->user()->business_id)
     ->get();
 
@@ -35,6 +36,7 @@ $product = Product::create([
 'cost'=>$request->cost
 
 ]);
+Log::error(response()->json($product));
 return response()->json($product);
 
 }

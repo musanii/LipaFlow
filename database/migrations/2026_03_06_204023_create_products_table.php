@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('business_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->nullable();
+           $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('unit_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('sku')->nullable();
             $table->string('barcode')->nullable();
             $table->decimal('price',10,2);
-            $table->decimal('cost',10,2);
+            $table->decimal('cost_price',10,2);
             $table->boolean('track_inventory')->default(true);
-            $table->boolean('is_recipe')->default(false);
-            $table->string('image')->nullable();
+            $table->integer('low_stock_alert')->default(0);
             $table->timestamps();
         });
     }

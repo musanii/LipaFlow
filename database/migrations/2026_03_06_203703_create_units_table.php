@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('business_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('symbol');
+            $table->string('short_name');
             $table->timestamps();
         });
     }

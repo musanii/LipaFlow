@@ -9,15 +9,26 @@ class Product extends Model
 protected $fillable = [
     'business_id',
     'category_id',
+    'unit_id',
     'name',
     'sku',
     'barcode',
     'price',
-    'cost',
+    'cost_price',
     'track_inventory',
-    'is_recipe'
+    'low_stock_alert'
 
 ];
+
+ public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 
 public function images()
 {
