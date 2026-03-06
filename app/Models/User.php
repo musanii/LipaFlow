@@ -19,6 +19,7 @@ class User extends Authenticatable implements JWTSubject
      * @var list<string>
      */
     protected $fillable = [
+        'business_id',
         'name',
         'email',
         'password',
@@ -46,6 +47,11 @@ class User extends Authenticatable implements JWTSubject
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
     }
 
     public function getJWTIdentifier()
