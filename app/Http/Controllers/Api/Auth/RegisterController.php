@@ -8,6 +8,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -37,14 +38,21 @@ class RegisterController extends Controller
                 'role'=>'admin'
             ]);
             DB::commit();
+            $token=auth('api')->login($user);
+
+           
             return response()->json([
                 'status'=>true,
+                'business'=>$business,
+                'user'=>$user,
+                'access_token'=>$token,
                 'message'=>'Business created successfully'
-            ]);
+            ],201);
 
 
         }catch(Exception $e){
             DB::rollBack();
+            Log::error("Registration failed: " . $e->getMessage());
 
             return response()->json([
                 'status'=>false,
