@@ -30,8 +30,18 @@ protected $fillable = [
         return $this->belongsTo(Unit::class);
     }
 
-public function images()
-{
-    return $this->hasMany(ProductImage::class);
-}
+    public function units()
+    {
+        return $this->hasMany(ProductUnit::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function recipes()
+    {
+        return $this->hasMany(Recipe::class);
+    }
 }
