@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('business_id');
             $table->foreignId('product_id');
+            $table->foreignId('batch_id')->nullable()->constrained('product_batches')->nullOnDelete();
             $table->enum('type',[
                 'purchase',
                 'sale',

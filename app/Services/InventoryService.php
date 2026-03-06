@@ -4,16 +4,19 @@ namespace App\Services;
 
 use App\Models\InventoryTransaction;
 use App\Models\ProductBatch;
+use Log;
 
 class InventoryService {
    
-       public function addStock($productId, $quantity, $cost)
+public function addStock($productId, $quantity, $cost)
 {
+
+Logger($cost);
     return ProductBatch::create([
         'product_id' => $productId,
         'business_id' => auth()->user()->business_id,
         'quantity' => $quantity,
-        'cost_price' => $cost
+        'purchase_price' => $cost
     ]);
 
     }

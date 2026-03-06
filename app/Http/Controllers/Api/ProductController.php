@@ -31,9 +31,10 @@ $request->validate([
 $product = Product::create([
 'business_id'=>auth()->user()->business_id,
 'category_id'=>$request->category_id,
+'unit_id'=>$request->unit_id,
 'name'=>$request->name,
 'price'=>$request->price,
-'cost'=>$request->cost
+'cost_price'=>$request->cost_price
 
 ]);
 Log::error(response()->json($product));

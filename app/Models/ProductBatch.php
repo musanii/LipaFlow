@@ -10,7 +10,7 @@ class ProductBatch extends Model
         'product_id',
         'business_id',
         'quantity',
-        'cost_price',
+        'purchase_price',
         'expires_at'
     ];
 
