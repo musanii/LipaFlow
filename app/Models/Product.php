@@ -44,4 +44,14 @@ protected $fillable = [
     {
         return $this->hasMany(Recipe::class);
     }
+
+    public function batches()
+    {
+        return $this->hasMany(ProductBatch::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(InventoryTransaction::class);
+    }
 }

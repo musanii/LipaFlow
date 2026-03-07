@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\InventoryTransaction;
 use App\Services\InventoryService;
 use Illuminate\Http\Request;
 
@@ -33,5 +34,10 @@ class InventoryController extends Controller
         );
 
         return response()->json($batch);
+    }
+
+    public function transactions()
+    {
+        return InventoryTransaction::latest()->get();
     }
 }

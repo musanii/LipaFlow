@@ -9,9 +9,10 @@ class ProductBatch extends Model
     protected $fillable = [
         'product_id',
         'business_id',
+        'batch_code',
         'quantity',
         'purchase_price',
-        'expires_at'
+        'expiry_date'
     ];
 
     public function product()

@@ -12,6 +12,13 @@ class InventoryTransaction extends Model
         'batch_id',
         'type',
         'quantity',
-        'reference_id'
+        'reference_type',
+        'reference_id',
+        'created_by'
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
