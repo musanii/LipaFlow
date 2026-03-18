@@ -8,9 +8,16 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use App\Services\InventoryService;
 
 class SalesService
 {
+
+protected $inventoryService;
+public function __construct(InventoryService $inventoryService){
+    $this->inventoryService = $inventoryService;
+
+}
     public function createSale($user, $data)
     {
         DB::beginTransaction();
@@ -35,16 +42,24 @@ class SalesService
                     'total'=>$total
                 ]);
 
-                InventoryTransaction::create([
-                    'business_id'=>$user->business_id,
-                    'product_id'=>$product->id,
-                    'type'=>'sale',
-                    'quantity'=>$item['quantity'],
-                    'reference_type'=>'sale',
-                    'reference_id'=>$sale->id,
-                    'created_by'=>$user->id
+                $this->inventoryService->deductStock(
+                    $product->id,
+                    $item['quantity'],
+                    $user,
+                    $sale->id
 
-                ]);
+                );
+
+                // InventoryTransaction::create([
+                //     'business_id'=>$user->business_id,
+                //     'product_id'=>$product->id,
+                //     'type'=>'sale',
+                //     'quantity'=> -$item['quantity'],
+                //     'reference_type'=>'sale',
+                //     'reference_id'=>$sale->id,
+                //     'created_by'=>$user->id
+
+                // ]);
             }
             DB::commit();
 
