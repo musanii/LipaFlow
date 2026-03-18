@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\InventoryController;
 use App\Http\Controllers\Api\ProductBatchController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SalesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,7 @@ Route::post('/products/{product}/image',[ProductController::class, 'uploadImage'
 Route::post('/inventory/add-stock',[InventoryController::class,'addStock']);
 Route::get('/inventory/transactions', [InventoryController::class,'transactions']);
 Route::post('/products/{product}/batches', [ProductBatchController::class,'store' ]);
+Route::post('/sales', [SalesController::class,'store']);
 
 });
 
