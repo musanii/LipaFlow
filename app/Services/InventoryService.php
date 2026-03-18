@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\InventoryTransaction;
 use App\Models\ProductBatch;
+use Exception;
 use Log;
 
 class InventoryService {
@@ -22,31 +23,44 @@ Logger($cost);
     }
 
 
-    public function deductStock($productId,$quantity)
+    public function deductStock($productId,$quantity, $user, $referenceId)
     {
+        $remainingQty = $quantity;
+
+
         $batches = ProductBatch::where('product_id', $productId)
         ->where('quantity','>', 0)
-        ->orderBy('created_at')
+        ->orderBy('created_at', 'asc')
+        ->lockForUpdate()
         ->get();
 
         foreach($batches as $batch)
             {
-                if($quantity <= 0){
-                    break;
-                }
-            }
-            $deduct = min($batch->quantity,$quantity);
-            $batch->decrement('quantity',$deduct);
+                if($remainingQty <= 0) break;
 
-            InventoryTransaction::create([
-                'business_id'=>auth()->user()->business_id,
+                $deductQty = min($batch->quantity, $remainingQty);
+
+                $batch->quantity -= $deductQty;
+                $batch->save();
+
+                InventoryTransaction::create([
+                'business_id'=>$user->business_id,
                 'product_id'=>$productId,
-                'batch_id'=>$batch->id,
                 'type'=>'sale',
-                'quantity'=>$deduct
+                'quantity'=>-$deductQty,
+                'reference_type'=>'sale',
+                'reference_id'=>$referenceId,
+                'created_by'=>$user->id
 
             ]);
-            $quantity -= $deduct;
+            $remainingQty -= $deductQty;
+
+                
+            }
+            if($remainingQty > 0)
+                {
+                    throw new  Exception("Insufficient stock for Product ID {$productId}");
+                }
 
     }
 }
